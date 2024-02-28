@@ -1,0 +1,40 @@
+from enum import Enum
+from typing import Optional, List
+
+from espn_api_orm.consts import ESPNSportTypes, ESPNSportSeasonTypes, ESPNCalendarTypes
+from espn_api_orm.generic.schema import BaseType
+from espn_api_orm.league.api import ESPNLeagueAPI
+from espn_api_orm.season.schema import Season
+
+
+class ESPNSeasonAPI(ESPNLeagueAPI):
+    """
+    ESPN League API for retrieving sport information about a specific league.
+
+    Attributes:
+
+    Methods:
+    """
+
+    def __init__(self, sport: ESPNSportTypes, league: str, season: int):
+        """
+        Initialize ESPNSportAPI.
+        """
+        super().__init__(sport, league)
+        self.season: int = season
+
+    def get_season(self) -> Season:
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}")
+        if res is None:
+            raise Exception(f'Invalid Season: {self.season} for {self.sport.value}/{self.league}')
+        return Season(**res)
+
+    def get_valid_types(self, return_values=True):
+        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types"))
+        if res is None:
+            raise Exception(f'Invalid Season: {self.season} for {self.sport.value}/{self.league}')
+        if not return_values:
+            return res
+        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types", res.items)]
+
+
