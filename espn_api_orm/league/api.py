@@ -28,3 +28,17 @@ class ESPNLeagueAPI(ESPNSportAPI):
         if not return_values:
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons", res.items) if int(i) > FIRST_SEASON]
+
+    def get_franchises(self, return_values=True):
+        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises?limit=1000"))
+        if not return_values:
+            return res
+        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises", res.items)]
+
+    def get_odds_providers(self, return_values=True):
+        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/providers?limit=1000"))
+        if not return_values:
+            return res
+        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/providers", res.items)]
+
+

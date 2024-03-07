@@ -27,7 +27,7 @@ class Logo(BaseModel):
     height: int
     alt: str
     rel: List[str]
-    lastUpdated: datetime.datetime
+    lastUpdated: Optional[datetime.datetime] = None
 
 class Link(BaseModel):
     language: Optional[str] = None

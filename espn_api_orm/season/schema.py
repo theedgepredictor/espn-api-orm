@@ -7,7 +7,7 @@ from espn_api_orm.generic.schema import Ref
 
 
 class SeasonType(BaseModel):
-    ref: str = Field(..., alias='$ref')
+    ref: str = Field(default=None, alias='$ref')
     id: str
     type: Optional[int] = None
     name: str
@@ -25,7 +25,7 @@ class SeasonType(BaseModel):
     slug: Optional[str] = None
 
     class Week(BaseModel):
-        ref: str = Field(..., alias='$ref')
+        ref: str = Field(default=None, alias='$ref')
         number: int
         startDate: datetime.datetime
         endDate: datetime.datetime
@@ -34,7 +34,7 @@ class SeasonType(BaseModel):
 
 
 class Season(BaseModel):
-    ref: str = Field(..., alias='$ref')
+    ref: str = Field(default=None, alias='$ref')
     year: Optional[int] = None
     startDate: datetime.datetime
     endDate: datetime.datetime
@@ -49,7 +49,7 @@ class Season(BaseModel):
     leaders: Optional[Ref] = None
 
     class Types(BaseModel):
-        ref: str = Field(..., alias='$ref')
+        ref: str = Field(default=None, alias='$ref')
         count: int
         pageIndex: int
         pageSize: int

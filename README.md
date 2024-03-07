@@ -12,7 +12,10 @@ pip install espn-api-orm
 ## Usage
 
 - BaseAPI -> SportAPI -> LeagueAPI -> SeasonAPI
-
+- SeasonAPI -> TeamsAPI
+- SeasonAPI -> VenueAPI
+- SeasonAPI -> CalendarAPI -> ScoreboardAPI
+- ScoreboardAPI -> OddsAPI
 
 ## Features
 - Easy API interaction: The emphasis is on making ESPN API easy to use for Python developers.
