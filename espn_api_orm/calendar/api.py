@@ -9,7 +9,8 @@ class ESPNCalendarAPI(ESPNSeasonAPI):
 
     Methods:
     - get_calendar
-    - get_calendar_dates
+    - get_weeks
+    - get_calendar_sections
     """
 
     def __init__(self, sport: ESPNSportTypes, league: str, season: int):

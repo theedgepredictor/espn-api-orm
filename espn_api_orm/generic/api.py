@@ -43,7 +43,7 @@ class ESPNBaseAPI:
     def _get_values(self, url, items):
         return [val.ref.replace(f"{url.replace('https', 'http')}/", '').split('?')[0] for val in items]
 
-    def api_request(self, url: str, retry_count: int = 0) -> dict or None:
+    def api_request(self, url: str, retry_count: int = 0):
         """
         Makes an API request to the specified URL.
 
@@ -85,6 +85,16 @@ class ESPNBaseAPI:
             self.api_request(url, retry_count=retry_count + 1)
 
     def get_sports(self, return_values=True):
+        """
+        Retrieves sports data from the API.
+
+        Parameters:
+            return_values (bool): Whether to return the values of the sports data. Default is True.
+
+        Returns:
+            If `return_values` is True, returns a list of values from the sports data.
+            If `return_values` is False, returns a `BaseType` object representing the sports data.
+        """
         res = BaseType(**self.api_request(f"{self._core_url}"))
         if not return_values:
             return res

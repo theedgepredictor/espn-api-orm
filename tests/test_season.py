@@ -1,12 +1,12 @@
-from espn_api_orm.consts import ESPNSportTypes
+from espn_api_orm.consts import ESPNSportTypes, ESPNSportSeasonTypes
 from espn_api_orm.generic.api import ESPNBaseAPI
 from espn_api_orm.sport.api import ESPNSportAPI
 from espn_api_orm.league.api import ESPNLeagueAPI
 from espn_api_orm.season.api import ESPNSeasonAPI
 
 base_api = ESPNBaseAPI()
-single_test = False
-sport_string ='basketball'
+single_test = True
+sport_string = 'basketball'
 sport = ESPNSportTypes(sport_string)
 
 league_string = 'mens-college-basketball'
@@ -26,8 +26,9 @@ for season in seasons_list:
     if not season_obj.type.hasStandings:
         continue
     season_types = season_api.get_valid_types(return_values=True)
-    seasons.append({'season': season_obj, 'types':season_types})
+    groups = {}
+    for season_type in season_types:
+        groups[season_type] = season_api.get_groups(ESPNSportSeasonTypes(season_type),return_values=True)
+    seasons.append({'season': season_obj, 'types':season_types, 'groups': groups})
     valid_seasons.append(season)
 print(seasons)
-
-print(valid_seasons)

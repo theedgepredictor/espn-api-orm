@@ -72,4 +72,4 @@ class ESPNCalendarTypes(Enum):
     BLACKLIST='blacklist'
     WHITELIST='whitelist'
 
-FIRST_SEASON = 1998
+FIRST_SEASON = 1998 # For all sports only go back to 1998

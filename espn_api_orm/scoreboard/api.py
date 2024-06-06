@@ -31,7 +31,7 @@ class ESPNScoreboardAPI(ESPNLeagueAPI):
         Retrieve scoreboard data for a specific sport.
 
         Args:
-            sport (ESPNSportTypes): Type of sport.
+            season_type (ESPNSportSeasonTypes): Type of sport season.
             dates: Dates for events.
             limit (int): Limit of events to retrieve.
             groups: Groups for events.
@@ -53,7 +53,7 @@ class ESPNScoreboardAPI(ESPNLeagueAPI):
         Retrieve events data for a specific sport.
 
         Args:
-            sport (ESPNSportTypes): Type of sport.
+            season_type (ESPNSportSeasonTypes): Type of sport season.
             dates: Dates for events.
             limit (int): Limit of events to retrieve.
             groups: Groups for events.
