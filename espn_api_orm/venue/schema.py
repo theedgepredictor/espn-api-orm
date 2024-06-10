@@ -8,6 +8,7 @@ from espn_api_orm.generic.schema import Day, Logo, Link
 class Address(BaseModel):
     city: str
     state: Optional[str] = None
+    zipCode: Optional[str] = None
 
 class Venue(BaseModel):
     ref: Optional[str] = Field(default=None, alias='$ref')

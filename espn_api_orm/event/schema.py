@@ -136,10 +136,3 @@ class Event(BaseModel):
         type: int
         slug: str
 
-
-class Scoreboard(BaseModel):
-    leagues: List[League]
-    groups: List[str] = None
-    day: Optional[Day] = None
-    eventsDate: Optional[EventDate] = None
-    events: List[Event]

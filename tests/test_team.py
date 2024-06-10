@@ -1,33 +1,39 @@
-from espn_api_orm.calendar.api import ESPNCalendarAPI
-from espn_api_orm.consts import ESPNSportTypes, ESPNSportSeasonTypes
-from espn_api_orm.generic.api import ESPNBaseAPI
-from espn_api_orm.sport.api import ESPNSportAPI
-from espn_api_orm.league.api import ESPNLeagueAPI
-from espn_api_orm.season.api import ESPNSeasonAPI
+import pytest
+
 from espn_api_orm.team.api import ESPNTeamAPI
 
-base_api = ESPNBaseAPI()
-single_test = True
 
-sport_string ='basketball'#'soccer'
-sport = ESPNSportTypes(sport_string)
-league_string = 'mens-college-basketball'#'eng.1'
-season = 2024
+@pytest.fixture
+def team_api():
+    team_api = ESPNTeamAPI('football','nfl',2022,1)
+    return team_api
 
-sport_api = ESPNSportAPI(sport)
-sport_obj = sport_api.get_sport()
+def test_team(team_api):
+    assert team_api.get_team() is not None
 
-league_api = ESPNLeagueAPI(sport, league_string)
-league_obj = league_api.get_league()
+def test_record(team_api):
+    assert team_api.get_record() is not None
 
-season_api = ESPNSeasonAPI(sport, league_string, season)
-season_obj = season_api.get_season()
+def test_depthchart(team_api):
+    assert team_api.get_depthchart() is not None
 
-teams_list = [1] if single_test else season_api.get_team_ids(return_values=True)
-teams = []
-for team_id in teams_list:
-    team_api = ESPNTeamAPI(sport, league_string, season, team_id)
-    team_obj = team_api.get_team()
-    teams.append(team_obj)
-print(teams)
+def test_roster(team_api):
+    assert team_api.get_roster() is not None
 
+def test_detailed_roster(team_api):
+    assert team_api.get_detailed_roster() is not None
+
+def test_schedule(team_api):
+    assert team_api.get_schedule() is not None
+
+def test_events(team_api):
+    assert team_api.get_events() is not None
+
+def test_injuries(team_api):
+    assert team_api.get_injuries() is not None
+
+def test_statistics(team_api):
+    assert team_api.get_statistics() is not None
+
+def test_past_performance(team_api):
+    assert team_api.get_past_performance(58) is not None

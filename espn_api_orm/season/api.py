@@ -37,7 +37,8 @@ class ESPNSeasonAPI(ESPNLeagueAPI):
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types", res.items)]
 
-    def get_groups(self, season_type: ESPNSportSeasonTypes, return_values=True):
+    def get_groups(self, season_type: ESPNSportSeasonTypes | int, return_values=True):
+        season_type = ESPNSportSeasonTypes(season_type) if type(season_type) is int else season_type
         res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/groups?limit=1000"))
         if not return_values:
             return res

@@ -16,12 +16,15 @@ class ESPNSportAPI(ESPNBaseAPI):
     Methods:
     """
 
-    def __init__(self, sport: ESPNSportTypes):
+    def __init__(self, sport: ESPNSportTypes | str):
         """
         Initialize ESPNSportAPI.
         """
         super().__init__()
-        self.sport: ESPNSportTypes = sport
+        self.sport: ESPNSportTypes = sport if isinstance(sport, ESPNSportTypes) else ESPNSportTypes(sport)
+
+    def __str__(self):
+        return self.sport.value
 
     def get_sport(self):
         return Sport(**self.api_request(f"{self._core_url}/{self.sport.value}"))

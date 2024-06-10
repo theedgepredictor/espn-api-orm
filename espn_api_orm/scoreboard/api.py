@@ -47,21 +47,3 @@ class ESPNScoreboardAPI(ESPNLeagueAPI):
         if week is not None:
             url = f"{url}&week={week}"
         return Scoreboard(**self.api_request(url))
-
-    def get_events(self, dates, season_type: ESPNSportSeasonTypes=None, week:int=None, limit:int=1000, groups=None) -> List[Event]:
-        """
-        Retrieve events data for a specific sport.
-
-        Args:
-            season_type (ESPNSportSeasonTypes): Type of sport season.
-            dates: Dates for events.
-            limit (int): Limit of events to retrieve.
-            groups: Groups for events.
-
-        Returns:
-            list: List of events data.
-        """
-        res = self.get_scoreboard(dates, season_type, week, limit, groups)
-        if res is None:
-            return []
-        return res.events

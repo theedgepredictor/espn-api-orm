@@ -2,6 +2,7 @@ from espn_api_orm.calendar.schema import Calendar, CalendarDates
 from espn_api_orm.consts import ESPNSportTypes, ESPNSportSeasonTypes, ESPNCalendarTypes
 from espn_api_orm.generic.schema import BaseType
 from espn_api_orm.season.api import ESPNSeasonAPI
+from typing import List
 
 class ESPNCalendarAPI(ESPNSeasonAPI):
     """
@@ -9,8 +10,7 @@ class ESPNCalendarAPI(ESPNSeasonAPI):
 
     Methods:
     - get_calendar
-    - get_weeks
-    - get_calendar_sections
+    - get_calendar_dates
     """
 
     def __init__(self, sport: ESPNSportTypes, league: str, season: int):
@@ -19,7 +19,8 @@ class ESPNCalendarAPI(ESPNSeasonAPI):
         """
         super().__init__(sport, league, season)
 
-    def get_calendar(self, season_type: ESPNSportSeasonTypes = None, calendar_type: ESPNCalendarTypes = ESPNCalendarTypes.ONDAYS, limit=1000):
+    def get_calendar(self, season_type: ESPNSportSeasonTypes | int = None, calendar_type: ESPNCalendarTypes = ESPNCalendarTypes.ONDAYS, limit=1000):
+        season_type = ESPNSportSeasonTypes(season_type) if type(season_type) is int else season_type
         url = f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}"
         if season_type is not None:
             url = f"{url}/types/{season_type.value}"
@@ -29,13 +30,14 @@ class ESPNCalendarAPI(ESPNSeasonAPI):
             url = f"{url}?limit={limit}"
         return Calendar(**self.api_request(url))
 
-    def get_weeks(self, season_type: ESPNSportSeasonTypes, return_values=True):
+    def get_weeks(self, season_type: ESPNSportSeasonTypes | int, return_values=True):
+        season_type = ESPNSportSeasonTypes(season_type) if type(season_type) is int else season_type
         res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks?limit=1000"))
         if not return_values:
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks", res.items)]
 
-    def get_calendar_sections(self, season_types, limit=1000):
+    def get_calendar_sections(self, season_types: List[int], limit=1000):
         if 2 in season_types:
             season_types = [2, 3]
         else:

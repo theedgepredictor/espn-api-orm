@@ -2,8 +2,10 @@ from enum import Enum
 from typing import Optional, List
 
 from espn_api_orm.consts import ESPNSportTypes
+from espn_api_orm.generic.schema import BaseType
 from espn_api_orm.season.api import ESPNSeasonAPI
 from espn_api_orm.team.schema import Team
+
 
 class ESPNTeamAPI(ESPNSeasonAPI):
     """
@@ -27,9 +29,46 @@ class ESPNTeamAPI(ESPNSeasonAPI):
             raise Exception(f'Invalid Season: {self.season} for {self.sport.value}/{self.league}')
         return Team(**res)
 
-    ## statistics
-    ## athletes
-    ## injuries
-    ## events
-    ## schedule
-    ## against the spread
+    def get_record(self, season_type=2):
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type}/teams/{self.team_id}/record")
+        return res
+
+    def get_depthchart(self):
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/depthcharts")
+        return res
+
+    def get_roster(self):
+        res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/teams/{self.team_id}/roster")
+        return res
+
+    def get_detailed_roster(self):
+        res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/teams/{self.team_id}?enable=roster,projection,stats")
+        return res
+
+    def get_schedule(self):
+        res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/teams/{self.team_id}/schedule?season={self.season}")
+        return res
+
+    def get_events(self):
+        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/events"))
+        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/events",res.items)]
+
+    def get_injuries(self):
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/teams/{self.team_id}/injuries?limit=200")
+        return res
+
+    def get_statistics(self, season_type=2):
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type}/teams/{self.team_id}/statistics")
+        return res
+
+    def get_past_performance(self, bet_provider_id, limit: int = 100):
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/odds/{bet_provider_id}/past-performances?limit={limit}")
+        return res
+
+    def get_projection(self):
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/projection")
+        return res
+
+    def get_news(self, limit: int = 100):
+        res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/news?limit={limit}")
+        return res

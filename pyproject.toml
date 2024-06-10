@@ -13,12 +13,13 @@ readme = "README.md"
 requires-python = ">= 3.8"
 keywords = ["data science", "ORM", "sports"]
 classifiers=[
+    "Development Status :: 1 Planning",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-version = '0.0.0'
-dynamic = ["version"]
+version = '0.0.1'
+
 dependencies = [
     "pydantic > 2.0.0",
     "requests >=2.31.0",
