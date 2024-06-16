@@ -69,6 +69,6 @@ class ESPNTeamAPI(ESPNSeasonAPI):
         res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/projection")
         return res
 
-    def get_news(self, limit: int = 100):
-        res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/news?limit={limit}")
+    def get_news(self):
+        res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/news?team={self.team_id}")
         return res

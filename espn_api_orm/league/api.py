@@ -31,10 +31,10 @@ class ESPNLeagueAPI(ESPNSportAPI):
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons", res.items) if int(i) > FIRST_SEASON]
 
-    def get_first_season(self, return_values):
+    def get_first_season(self, return_values=True):
         return min(self.get_seasons(return_values=return_values))
 
-    def get_current_season(self, return_values):
+    def get_current_season(self, return_values=True):
         return max(self.get_seasons(return_values=return_values))
 
     def is_active(self):
@@ -59,5 +59,15 @@ class ESPNLeagueAPI(ESPNSportAPI):
         if not return_values:
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/providers", res.items)]
+
+    def get_news(self, limit=100):
+        res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/news?limit={limit}")
+        return res
+
+    def get_venues(self,return_values=True):
+        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues?limit=1000"))
+        if not return_values:
+            return res
+        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues", res.items)]
 
 
