@@ -25,24 +25,18 @@ class ESPNLeagueAPI(ESPNSportAPI):
     def get_league(self):
         return League(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}"))
 
-    def get_seasons(self, return_values=True):
-        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons?limit=200")
-        if res is None:
-            return []
-        res = BaseType(**res)
-        if not return_values:
-            return res
-        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons", res.items) if int(i) > FIRST_SEASON]
+    def get_seasons(self):
+        return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons?limit=200")
 
-    def get_first_season(self, return_values=True):
-        return min(self.get_seasons(return_values=return_values))
+    def get_first_season(self):
+        return min(self.get_seasons())
 
-    def get_current_season(self, return_values=True):
-        return max(self.get_seasons(return_values=return_values))
+    def get_current_season(self):
+        return max(self.get_seasons())
 
     def is_active(self):
         try:
-            season = self.get_current_season(return_values=True)
+            season = self.get_current_season()
             reg_res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{season}")
             start_date = datetime.datetime.strptime(reg_res['startDate'], '%Y-%m-%dT%H:%MZ')
             end_date = datetime.datetime.strptime(reg_res['endDate'], '%Y-%m-%dT%H:%MZ')
@@ -51,32 +45,19 @@ class ESPNLeagueAPI(ESPNSportAPI):
             print(e)
             return False
 
-    def get_franchises(self, return_values=True):
-        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises?limit=1000")
-        if res is None:
-            return []
-        res = BaseType(**res)
-        if not return_values:
-            return res
-        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises", res.items)]
+    def get_franchises(self):
+        return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises?limit=1000")
 
-    def get_odds_providers(self, return_values=True):
-        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/providers?limit=1000"))
-        if not return_values:
-            return res
-        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/providers", res.items)]
 
-    def get_news(self, limit=100):
+    def get_odds_providers(self):
+        self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/providers?limit=1000")
+
+    def get_news(self, limit=1000):
         res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/news?limit={limit}")
         return res
 
-    def get_venues(self,return_values=True):
-        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues?limit=1000")
-        if res is None:
-            return []
-        res = BaseType(**res)
-        if not return_values:
-            return res
-        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues", res.items)]
+    def get_venues(self):
+        return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues?limit=1000")
+
 
 

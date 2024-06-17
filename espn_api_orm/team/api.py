@@ -50,21 +50,17 @@ class ESPNTeamAPI(ESPNSeasonAPI):
         return res
 
     def get_events(self):
-        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/events")
-        if res is None:
-            return []
-        res = BaseType(**res)
-        return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/events",res.items)]
+        return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/events")
 
     def get_injuries(self):
-        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/teams/{self.team_id}/injuries?limit=200")
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/teams/{self.team_id}/injuries?limit=1000")
         return res
 
     def get_statistics(self, season_type=2):
         res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type}/teams/{self.team_id}/statistics")
         return res
 
-    def get_past_performance(self, bet_provider_id, limit: int = 100):
+    def get_past_performance(self, bet_provider_id, limit: int = 1000):
         res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/odds/{bet_provider_id}/past-performances?limit={limit}")
         return res
 
