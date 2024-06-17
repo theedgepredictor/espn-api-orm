@@ -50,7 +50,10 @@ class ESPNTeamAPI(ESPNSeasonAPI):
         return res
 
     def get_events(self):
-        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/events"))
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/events")
+        if res is None:
+            return []
+        res = BaseType(**res)
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/events",res.items)]
 
     def get_injuries(self):
@@ -69,6 +72,6 @@ class ESPNTeamAPI(ESPNSeasonAPI):
         res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams/{self.team_id}/projection")
         return res
 
-    def get_news(self):
+    def get_team_news(self):
         res = self.api_request(f"{self._base_url}/{self.sport.value}/{self.league}/news?team={self.team_id}")
         return res

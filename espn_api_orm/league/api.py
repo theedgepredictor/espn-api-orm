@@ -26,7 +26,10 @@ class ESPNLeagueAPI(ESPNSportAPI):
         return League(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}"))
 
     def get_seasons(self, return_values=True):
-        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons?limit=200"))
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons?limit=200")
+        if res is None:
+            return []
+        res = BaseType(**res)
         if not return_values:
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons", res.items) if int(i) > FIRST_SEASON]
@@ -49,7 +52,10 @@ class ESPNLeagueAPI(ESPNSportAPI):
             return False
 
     def get_franchises(self, return_values=True):
-        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises?limit=1000"))
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises?limit=1000")
+        if res is None:
+            return []
+        res = BaseType(**res)
         if not return_values:
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises", res.items)]
@@ -65,7 +71,10 @@ class ESPNLeagueAPI(ESPNSportAPI):
         return res
 
     def get_venues(self,return_values=True):
-        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues?limit=1000"))
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues?limit=1000")
+        if res is None:
+            return []
+        res = BaseType(**res)
         if not return_values:
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues", res.items)]

@@ -30,7 +30,10 @@ class ESPNSportAPI(ESPNBaseAPI):
         return Sport(**self.api_request(f"{self._core_url}/{self.sport.value}"))
 
     def get_leagues(self,return_values = True):
-        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues?limit=200"))
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues?limit=200")
+        if res is None:
+            return []
+        res = BaseType(**res)
         if not return_values:
             return res
         return self._get_values(f"{self._core_url}/{self.sport.value}/leagues", res.items)

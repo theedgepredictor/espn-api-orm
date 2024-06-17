@@ -6,7 +6,7 @@ import datetime
 from espn_api_orm.generic.schema import Day, Logo, Link
 
 class Address(BaseModel):
-    city: str
+    city: Optional[str] = None
     state: Optional[str] = None
     zipCode: Optional[str] = None
 

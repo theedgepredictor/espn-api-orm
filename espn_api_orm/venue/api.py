@@ -16,9 +16,10 @@ class ESPNVenueAPI(ESPNLeagueAPI):
         """
         Initialize ESPNVenueAPI.
         """
+        sport: ESPNSportTypes = sport if isinstance(sport, ESPNSportTypes) else ESPNSportTypes(sport)
         super().__init__(sport, league)
         self.venue_id = venue_id
 
     def get_venue(self):
-        url = f"{self._base_url}/{self.sport.value}/{self.league}/venues/{self.venue_id}"
+        url = f"{self._core_url}/{self.sport.value}/leagues/{self.league}/venues/{self.venue_id}"
         return Venue(**self.api_request(url))

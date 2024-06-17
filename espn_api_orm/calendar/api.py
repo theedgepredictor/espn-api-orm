@@ -32,7 +32,10 @@ class ESPNCalendarAPI(ESPNSeasonAPI):
 
     def get_weeks(self, season_type: ESPNSportSeasonTypes | int, return_values=True):
         season_type = ESPNSportSeasonTypes(season_type) if type(season_type) is int else season_type
-        res = BaseType(**self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks?limit=1000"))
+        res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks?limit=1000")
+        if res is None:
+            return []
+        res = BaseType(**res)
         if not return_values:
             return res
         return [int(i) for i in self._get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks", res.items)]
