@@ -32,13 +32,12 @@ class ESPNSeasonAPI(ESPNLeagueAPI):
     def get_valid_types(self):
         return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types")
 
-
     def get_groups(self, season_type: ESPNSportSeasonTypes | int):
         season_type = ESPNSportSeasonTypes(season_type) if type(season_type) is int else season_type
         return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/groups?limit=1000")
 
 
-    def get_team_ids(self):
+    def get_team_season_ids(self):
         return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/teams?limit=1000")
 
 

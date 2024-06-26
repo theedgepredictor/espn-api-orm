@@ -9,7 +9,7 @@ def example_get_team():
     season = 2022
 
     season_api = ESPNSeasonAPI(sport, league, season)
-    team_ids = season_api.get_team_ids()
+    team_ids = season_api.get_team_season_ids()
 
     team_api = ESPNTeamAPI(sport, league, season, team_ids[0])
     print(team_api.get_team().__dict__)
