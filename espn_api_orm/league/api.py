@@ -1,7 +1,6 @@
 import datetime
 
 from espn_api_orm.consts import ESPNSportTypes, FIRST_SEASON
-from espn_api_orm.generic.schema import BaseType
 from espn_api_orm.league.schema import League
 from espn_api_orm.sport.api import ESPNSportAPI
 from espn_api_orm.team.schema import Team
@@ -49,9 +48,13 @@ class ESPNLeagueAPI(ESPNSportAPI):
     def get_franchises(self):
         return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/franchises?limit=1000")
 
-    def get_teams(self):
+    def get_team_ids(self):
         team_url = f"{self._core_url}/{self.sport.value}/leagues/{self.league}/teams"
-        return [Team(**self.api_request(f"{team_url}/{team_id}")) for team_id in self.get_values(team_url+"?limit=1000")]
+        return self.get_values(team_url+"?limit=1000")
+
+    def get_teams(self, ids):
+        team_url = f"{self._core_url}/{self.sport.value}/leagues/{self.league}/teams"
+        return [Team(**self.api_request(f"{team_url}/{team_id}")) for team_id in ids]
 
     def get_odds_providers(self):
         self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/providers?limit=1000")
