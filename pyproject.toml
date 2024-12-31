@@ -17,7 +17,7 @@ classifiers=[
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-version = '0.0.7'
+version = '0.0.8'
 
 dependencies = [
     "pydantic > 2.0.0",

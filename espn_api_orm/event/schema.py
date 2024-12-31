@@ -62,8 +62,11 @@ class Competitor(BaseModel):
 
     class Statistic(BaseModel):
         name: str
+        shortDisplayName: Optional[str] = None
+        description: Optional[str] = None
         abbreviation: str
         displayValue: str
+        value: Optional[float] = None
 
     class Record(BaseModel):
         name: str
@@ -115,6 +118,8 @@ class Event(BaseModel):
     competitions: List[Competition]
     links: List['Link']
     status: 'Status'
+    predictor: Optional[Any] = None
+    powerIndex: Optional[Any] = None
 
     class Status(BaseModel):
         clock: Optional[float] = None

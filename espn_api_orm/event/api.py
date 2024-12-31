@@ -34,15 +34,34 @@ class ESPNEventAPI(ESPNScoreboardAPI):
         super().__init__(sport, league)
         self.event_id = event_id
 
-    def get_event(self):
+    def get_event(
+            self,
+            include_predictor = False,
+            include_roster = False,
+    ):
         url = f"{self._base_url}/{self.sport.value}/{self.league}/scoreboard/{self.event_id}"
-        return Event(**self.api_request(url))
+        event_obj = Event(**self.api_request(url))
+        if include_roster:
+            team1 = event_obj.competitions[0].competitors[0]
+            team1_roster = self.get_roster(team1.id)
+            if team1_roster is not None:
+                event_obj.competitions[0].competitors[0].team.athletes = team1_roster['entries']
+
+            team2 = event_obj.competitions[0].competitors[1]
+            team2_roster = self.get_roster(team2.id)
+            if team2_roster is not None:
+                event_obj.competitions[0].competitors[1].team.athletes = team2_roster['entries']
+
+        if include_predictor:
+            event_obj.predictor = self.get_prediction()
+
+        return event_obj
 
     def get_summary(self):
         url = f"{self._base_url}/{self.sport.value}/{self.league}/summary?event={self.event_id}"
         return self.api_request(url)
 
-    def get_prediction(self, limit:int=1000) :
+    def get_prediction(self, limit:int=1000):
         url = f"{self._core_url}/{self.sport.value}/leagues/{self.league}/events/{self.event_id}/competitions/{self.event_id}/predictor?limit={limit}"
         return self.api_request(url)
 
