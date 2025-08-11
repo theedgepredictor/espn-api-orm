@@ -30,10 +30,16 @@ class ESPNCalendarAPI(ESPNSeasonAPI):
             url = f"{url}?limit={limit}"
         return Calendar(**self.api_request(url))
 
-    def get_weeks(self, season_type: ESPNSportSeasonTypes | int):
+    def get_weeks(self, season_type: ESPNSportSeasonTypes | int, detailed=False):
         season_type = ESPNSportSeasonTypes(season_type) if type(season_type) is int else season_type
-        return self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks?limit=1000")
-
+        weeks = self.get_values(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks?limit=1000")
+        if not detailed:
+            return weeks
+        detail_weeks = []
+        for week in weeks:
+            res = self.api_request(f"{self._core_url}/{self.sport.value}/leagues/{self.league}/seasons/{self.season}/types/{season_type.value}/weeks/{week}")
+            detail_weeks.append(res)
+        return detail_weeks
 
     def get_calendar_sections(self, season_types: List[int], limit=1000):
         if 2 in season_types:

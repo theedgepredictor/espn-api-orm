@@ -65,7 +65,7 @@ class ESPNEventAPI(ESPNScoreboardAPI):
         url = f"{self._core_url}/{self.sport.value}/leagues/{self.league}/events/{self.event_id}/competitions/{self.event_id}/predictor?limit={limit}"
         return self.api_request(url)
 
-    def get_odds(self, provider_id: int=None,limit:int=1000) :
+    def get_odds(self, provider_id: int=None,limit:int=1000):
         url = f"{self._core_url}/{self.sport.value}/leagues/{self.league}/events/{self.event_id}/competitions/{self.event_id}/odds"
         if provider_id is not None:
             url = f"{url}/{provider_id}"

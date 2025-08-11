@@ -87,7 +87,6 @@ class Competitor(BaseModel):
             athlete: 'Athlete'
             team: 'TeamRef'
 
-
 class Competition(BaseModel):
     id: int
     uid: str

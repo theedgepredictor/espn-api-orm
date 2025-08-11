@@ -39,9 +39,13 @@ class ESPNBaseAPI:
         """
         self._base_url = 'https://site.api.espn.com/apis/site/v2/sports'
         self._core_url = 'https://sports.core.api.espn.com/v2/sports'
+        self._common_url = 'https://site.web.api.espn.com/apis/common/v3/sports'
+
+    def get_value(self, url, val):
+        return val.ref.replace(f"{url.replace('https', 'http')}/", '').split('?')[0]
 
     def _get_values(self, url, items):
-        return [val.ref.replace(f"{url.replace('https', 'http')}/", '').split('?')[0] for val in items]
+        return [self.get_value(url, val) for val in items]
 
     def get_values(self, url, values_url = None):
         if values_url is None:
